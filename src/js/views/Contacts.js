@@ -11,11 +11,11 @@ export const Contacts = () => {
 
 	const { store, actions } = useContext(Context);
 
-	useEffect(() => {
-		// const listContacts =
-		actions.getAllAgenda();
-	}, []);
-	console.log(store.listContacts);
+	// useEffect(() => {
+	// 	// const listContacts =
+	// 	actions.getAllAgenda();
+	// }, []);
+	// console.log(store.listContacts);
 
 	return (
 		<div className="container">

@@ -1,83 +1,118 @@
 const getState = ({ getStore, setStore, getActions }) => {
+	
 	return {
+
+		//store Armazena la lista de contactos
 		store: {
 			listContacts: []
 			//Your data structures, A.K.A Entities
 		},
+
+		//actions Atualiza el store con sus funciones
 		actions: {
 			//(Arrow) Functions that update the Store
 			// Remember to use the scope: scope.state.store & scope.setState()
-			getAllAgenda: () => {
+
+			//Obteniendo agenda
+			getAllAgenda: async () => {
 				console.log("entramos");
-				fetch("https://playground.4geeks.com/apis/fake/contact/agenda/velazcoCarlos")
-					.then(response => response.json())
-					.then(data => setStore({ listContacts: data }))
-					.catch(error => console.log(error));
-			},
 
-			createOneContact: newContact => {
-				fetch("https://playground.4geeks.com/apis/fake/contact", {
-					method: "POST",
-					body: JSON.stringify({
-						full_name: `${newContact.name}`,
-						email: `${newContact.email}`,
-						agenda_slug: `${newContact.agenda_slug}`,
-						address: `${newContact.address}`,
-						phone: `${newContact.phone}`
-					}),
-					headers: {
-						"Content-Type": "application/json"
+				try {
+					const response = await fetch('https://playground.4geeks.com/contact/agendas/EIAHRJAY/contacts');
+
+					if (!response.ok) {
+						throw new Error('Error en la solicitud: ' + response.statusText);
 					}
-				})
-					.then(response => {
-						console.log(response);
-						return response.json();
-					})
-					.then(data => console.log(data))
-					.catch(error => console.log(error));
+
+					const data = await response.json();
+					console.log(data);
+					
+					//setStore({ listContacts: data });
+				} catch (error) {
+					console.error(error);
+				}
 			},
+			
+			
+			//Creando contact
+			// createOneContact: async (addContacts) => {
+			// 	try {
+			// 		const response = await fetch("https://playground.4geeks.com/contact/agendas/EIAHRJAY/contacts", {
+			// 			method: "POST",
+			// 			body: JSON.stringify({
+			// 				full_name: `${addContacts.name}`,
+			// 				email: `${addContacts.email}`,
+			// 				agenda_slug: `${addContacts.agenda_slug}`,
+			// 				address: `${addContacts.address}`,
+			// 				phone: `${addContacts.phone}`
+			// 			}),
+			// 			headers: {
+			// 				"Content-Type": "application/json"
+			// 			}
+			// 		});
 
-			deleteOneContact: id => {
-				fetch(`https://playground.4geeks.com/apis/fake/contact/${id}`, {
-					method: "DELETE"
+			// 		if (!response.ok) {
+			// 			throw new Error('Error en la solicitud: ' + response.statusText);
+			// 		}
 
-					// headers: {
-					// 	"Content-Type": "application/json"
-					// }
-				})
-					.then(response => response.json())
-					.then(data => {
-						console.log(data);
-						getActions().getAllAgenda();
-					}) // .then(data => setStore({ listContacts: data }))
-					.catch(error => console.log(error));
-			},
+			// 		const data = await response.json();
+			// 		console.log(data);
+			// 	} catch (error) {
+			// 		console.error(error);
+			// 	}
+			// },
 
-			updateOneContact: (id, data) => {
-				fetch(`https://playground.4geeks.com/apis/fake/contact/${id}`, {
-					method: "PUT",
-					body: JSON.stringify({
-						full_name: `${data.name}`,
-						email: `${data.email}`,
-						agenda_slug: `${data.agenda_slug}`,
-						address: `${data.address}`,
-						phone: `${data.phone}`
-					}),
-					headers: {
-						"Content-Type": "application/json"
-					}
-				})
-					.then(response => {
-						console.log(response);
 
-						return response.json();
-					})
-					.then(data => {
-						console.log(data);
-						getActions().getAllAgenda();
-					})
-					.catch(error => console.log(error));
-			}
+			//Borrando conatct
+			// deleteOneContact: async (id) => {
+			// 	try {
+			// 		const response = await fetch(`https://playground.4geeks.com/contact/agendas/EIAHRJAY/contacts/${id}`, {
+			// 			method: "DELETE"
+			// 		});
+
+			// 		if (!response.ok) {
+			// 			throw new Error('Error en la solicitud: ' + response.statusText);
+			// 		}
+
+			// 		const data = await response.json();
+			// 		console.log(data);
+			// 		getActions().getAllAgenda();
+			// 	} catch (error) {
+			// 		console.error(error);
+			// 	}
+			// },
+
+
+			// Atualizando contacto
+			// updateOneContact: async (id, data) => {
+			// 	try {
+			// 		const response = await fetch(`https://playground.4geeks.com/contact/agendas/EIAHRJAY/contacts/${id}`, {
+			// 			method: "PUT",
+			// 			body: JSON.stringify({
+			// 				full_name: `${data.name}`,
+			// 				email: `${data.email}`,
+			// 				agenda_slug: `${data.agenda_slug}`,
+			// 				address: `${data.address}`,
+			// 				phone: `${data.phone}`
+			// 			}),
+			// 			headers: {
+			// 				"Content-Type": "application/json"
+			// 			}
+			// 		});
+
+			// 		if (!response.ok) {
+			// 			throw new Error('Error en la solicitud: ' + response.statusText);
+			// 		}
+
+			// 		const updatedData = await response.json();
+			// 		console.log(updatedData);
+					
+			// 		getActions().getAllAgenda(); // vulve obtener la lista para atulizar el store
+				
+			// 	} catch (error) {
+			// 		console.error(error);
+			// 	}
+			// }
 		}
 	};
 };
