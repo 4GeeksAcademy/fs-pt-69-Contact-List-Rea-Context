@@ -1,6 +1,5 @@
 import { ContactCard } from "../component/ContactCard.js";
-import { Modal } from "../component/Modal";
-import { ModalUpdate } from "../component/ModalUpdate.js";
+
 
 export const Contacts = () => {
 	const [state, setState] = useState({
